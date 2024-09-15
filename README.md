@@ -24,3 +24,13 @@
 - SpringBoot: 3.3.3
 - SQLite
 
+##### 참고
+1. git repository 최초 생성
+echo "# libSys2" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin <remote repository URL(ex. https://github.com/xxx/yyyy.git)>
+git push -u origin main
+
