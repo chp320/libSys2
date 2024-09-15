@@ -21,3 +21,6 @@
 - jdk: openjdk 17.0.9 2023-10-17 
 - node.js: 18.19.0
 - npm: 10.2.3
+- SpringBoot: 3.3.3
+- SQLite
+
