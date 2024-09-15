@@ -1,0 +1,198 @@
+<template>
+  <div class="get">
+    <button @click="get">데이터 가져오기</button>
+    <p>{{ data }}</p>
+  </div>
+  <div class="test">
+    <button @click="test">백엔드 연동 테스트</button>
+    <p>{{ data2 }}</p>
+  </div>
+  <div class="test2">
+    <input type="text"
+           id="isbnCode"
+           v-model="isbnCode"
+           @keydown.enter="isbnSrch"
+           ref="isbnInput"
+           placeholder="ISBN 값을 입력하세요">
+    <button @click="clearIsbnCode">다시 입력하기</button>
+    <br>
+    <p>{{ data4 }}</p>
+    <input type="text"
+           id="bookName"
+           v-model="bookName"
+           placeholder="도서명을 입력하세요">
+    <input type="text"
+           id="authorName"
+           v-model="authorName"
+           placeholder="저자명을 입력하세요">
+    <button @click="search">도서 검색 하기</button>
+    <p>{{ data3 }}</p>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: "App",
+  data() {
+    return {
+      data: [],
+      data2: [],
+      data3: [],
+      data4: [],
+      bookName: null,
+      authorName: null,
+      isbnCode: null,
+      id: 1
+    };
+  },
+  methods: {
+    get() {
+      axios
+          .get(`https://jsonplaceholder.typicode.com/todos/${this.id}`)
+          .then((result) => {
+            console.log(result.data);
+            this.data.push(result.data);
+            this.id++;
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            console.log("finally");
+          });
+    },
+    isbnSrch() {
+      console.log(this.isbnCode);
+      axios
+          .get('https://www.nl.go.kr/NL/search/openApi/search.do', {
+            params: {
+              key: '025d72e99c97d98d7b028fd26cf768ec4af09fefe6d5eec3d97a91a5bee86a7d',
+              apiType: 'json',
+              detailSearch: 'true',
+              isbnOp: 'isbn',
+              isbnCode: this.isbnCode,
+              systemType: '오프라인자료',
+              govYn: 'N',
+              category: '도서',
+              sort: 'ipub_year',
+              order: 'desc'
+            }
+          })
+          .then((result) => {
+            const response = result.data;
+
+            // 전체 건수 확인
+            const total = response.total;
+            console.log(`Total results: ${total}`);
+
+            // 결과 추출
+            const items = response.result;
+
+            // 원하는 key 항목 추출
+            if(items && Array.isArray(items)) {
+              const rslt = items.map(item => ({
+                title_info: item.titleInfo,
+                author_info: item.authorInfo,
+                pub_info: item.pubInfo
+              }));
+              console.log(rslt);
+
+              // data4 에 데이터 저장하기
+              this.data4 = rslt;
+            }
+            // else {
+            //   console.log('No Items Found!');
+            //   this.data3 = [];
+            // }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            console.log("finally");
+          });
+    },
+    search() {
+      console.log(this.bookName, this.authorName);
+      axios
+          .get('https://www.nl.go.kr/NL/search/openApi/search.do', {
+            params: {
+              key: '025d72e99c97d98d7b028fd26cf768ec4af09fefe6d5eec3d97a91a5bee86a7d',
+              apiType: 'json',
+              srchType: 'title',
+              kwd: this.bookName,
+              detailSearch: 'ture',
+              f1: 'title',
+              v1: this.bookName,
+              f2: 'author',
+              v2: this.authorName,
+              systemType: '오프라인자료',
+              govYn: 'N',
+              category: '도서',
+              sort: 'ipub_year',
+              order: 'desc'
+            }
+          })
+          .then((result) => {
+            const response = result.data;
+
+            // 전체 건수 확인
+            const total = response.total;
+            console.log(`Total results: ${total}`);
+
+            // 결과 추출
+            const items = response.result;
+
+            // 원하는 key 항목 추출
+            if(items && Array.isArray(items)) {
+              const rslt = items.map(item => ({
+                title_info: item.titleInfo,
+                author_info: item.authorInfo,
+                pub_info: item.pubInfo
+              }));
+              console.log(rslt);
+
+              // data3 에 데이터 저장하기
+              this.data3 = rslt;
+            }
+            // else {
+            //   console.log('No Items Found!');
+            //   this.data3 = [];
+            // }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            console.log("finally");
+          });
+    },
+    test() {
+      axios
+          .get('http://localhost:8080/connectTest')
+          .then((result) => {
+            console.log(result.data);
+            this.data2.push(result.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            console.log("finally");
+          });
+    },
+    clearIsbnCode() {
+      this.isbnCode = '';
+      this.data4 = [];
+
+      // 초기화 후 focus 를 isbn 검색창에 둠
+      this.$refs.isbnInput.focus();
+    }
+  }
+}
+</script>
+
+<style>
+</style>
