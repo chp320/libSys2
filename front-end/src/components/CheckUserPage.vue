@@ -34,6 +34,13 @@ export default {
           .finally(() => {
             console.log("finally");
           });
+    },
+    clearUserID() {
+      this.userID = '' ;
+      this.data = [] ;
+
+      // 입력창 초기화
+      this.$refs.inputUserID.focus();
     }
   }
 }
@@ -45,6 +52,7 @@ export default {
          id="userID"
          v-model="userID"
          @keydown.enter="searchUserID"
+         ref="inputUserID"
          placeholder="바코드를 읽거나 고객번호를 입력해주세요">
   <button @click="clearUserID">다시 입력하기</button>
 </div>

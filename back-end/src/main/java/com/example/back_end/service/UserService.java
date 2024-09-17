@@ -27,5 +27,4 @@ public class UserService {
     public List<User> getUserByUserID(String userID) {
         return userRepository.findByUserIDContaining(userID);
     }
-
 }
