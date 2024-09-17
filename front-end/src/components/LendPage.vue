@@ -4,13 +4,13 @@
   <hr><br><br><br>
 
   <div>
-<!--    1st-->
+<!--    1st (no) -->
 <!--    <CheckUserPage v-if="!isUserVerified" @user-verified="userVerifiedHandler" />-->
 <!--    <div v-else>-->
 <!--      <h1>대출하기 페이지</h1>-->
 <!--    </div>-->
 
-<!--    2nd-->
+<!--    2nd (no) -->
 <!--    <CheckUserPage @user-verified="showLendPage" @error="handleError"/>-->
 <!--    <div v-if="isUserVerified">-->
 <!--      <h1>대출하기 페이지</h1>-->
@@ -18,7 +18,7 @@
 <!--    <p v-else-if="error">{{ error }}</p>-->
 <!--  </div>-->
 
-<!--    3rd-->
+<!--    3rd (yes) -->
     <!-- userID로 verified 되지 않은 경우 CheckUserPage 만 노출-->
     <CheckUserPage v-if="!isUserVerified" @user-verified="showLendPage" @error="handleError"/>
 
@@ -32,7 +32,7 @@
     <!-- error 발생 시 error message 노출 -->
     <p v-if="error">{{ error }}</p>
 
-<!--    4th-->
+<!--    4th (no) -->
 <!--    <CheckUserPage @user-verified="showLendPage" @error="handleError" />-->
 <!--    <div v-if="isUserVerified">-->
 <!--      <h1>대출하 페이지</h1>-->

@@ -123,7 +123,7 @@ export default {
               apiType: 'json',
               srchType: 'title',
               kwd: this.bookName,
-              detailSearch: 'ture',
+              detailSearch: 'true',
               f1: 'title',
               v1: this.bookName,
               f2: 'author',
