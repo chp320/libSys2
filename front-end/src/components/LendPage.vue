@@ -24,9 +24,19 @@
 
     <!-- userID로 verified 된 경우 LendPage 만 노출 -->
     <div v-else>
-      <h1>대출하기 페이지</h1>
-      <p>회원번호: {{ userID }}</p>
-      <p>회원이름: {{ userName }}</p>
+      <div class="lend-page">
+        <h1>📚 대출하기 페이지 📚</h1>
+<!--        <p>회원번호: {{ userID }}</p>-->
+        <p>안녕하세요, {{ userName }}님~</p>
+
+        <div class="search-section">
+          <input type="text" v-model="searchQeury" placeholder="바코드를 읽거나 입력해 주세요." />
+          <button @click="serachBook">도서 검색</button>
+        </div>
+
+        <div v-if="alertMessage" class="alert">{{ alertMessage }}</div>
+      </div>
+
     </div>
 
     <!-- error 발생 시 error message 노출 -->

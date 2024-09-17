@@ -19,7 +19,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/user//register")
+    @PostMapping("/user/register")
     public User createUser(@RequestBody User user) {
         System.out.println("(createUser) UserID: " + user.getUserID()
                             + ", userName: " + user.getUserName()

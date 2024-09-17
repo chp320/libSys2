@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * 회원 정보를 관리한다.
- * - 아이디(id), 이름(name), 생년월일(birth), 성별(sex)
+ * - 회원번호(id), 이름(name), 생년월일(birth), 성별(sex)
  * - BaseTimeEntity 를 상속받아 생성/수정 시간을 자동 저장
  */
 @Getter
