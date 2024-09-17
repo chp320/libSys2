@@ -25,10 +25,22 @@
     <!-- userID로 verified 된 경우 LendPage 만 노출 -->
     <div v-else>
       <h1>대출하기 페이지</h1>
+      <p>회원번호: {{ userID }}</p>
+      <p>회원이름: {{ userName }}</p>
     </div>
 
     <!-- error 발생 시 error message 노출 -->
     <p v-if="error">{{ error }}</p>
+
+<!--    4th-->
+<!--    <CheckUserPage @user-verified="showLendPage" @error="handleError" />-->
+<!--    <div v-if="isUserVerified">-->
+<!--      <h1>대출하 페이지</h1>-->
+<!--      <p>회원번호: {{ userID }}</p>-->
+<!--      <p>회원이름: {{ userName }}</p>-->
+<!--    </div>-->
+<!--    <p v-else-if="error">{{ error }}</p>-->
+
   </div>
 </template>
 
@@ -40,16 +52,20 @@ export default {
   data() {
     return {
       isUserVerified: false,
-      error: ''
+      error: '',
+      userID: '',
+      userName: ''
     };
   },
   methods: {
     // userVerifiedHandler() {
     //   this.isUserVerified = true;
     // }
-    showLendPage() {
+    showLendPage( { userID, userName } ) {
       this.isUserVerified = true;
       this.error = '';
+      this.userID = userID;
+      this.userName = userName;
     },
     handleError(message) {
       this.isUserVerified = false;

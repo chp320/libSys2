@@ -5,7 +5,8 @@ export default {
   name: "CheckUserPage",
   data() {
     return {
-      userID: null,
+      userID: '',
+      userName: '',
       data: []
     }
   },
@@ -23,8 +24,10 @@ export default {
               return;
             }
 
-            this.data.push(result.data);
-            this.$emit('user-verified');
+            // this.data.push(result.data);
+            this.data = result.data[0];
+            // this.$emit('user-verified');
+            this.$emit('user-verified', { userID: this.data.userID, userName: this.data.userName });
           })
           .catch((error) => {
             console.log(error);
