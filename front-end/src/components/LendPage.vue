@@ -47,6 +47,7 @@
         <div class="grid" v-if="bookList.length > 0">
           <h3>🦄 추가된 도서 목록 🦄</h3>
           <div class="grid-header">
+            <span>선택</span>
             <span>제목</span>
             <span>ISBN코드</span>
             <span>저자</span>
@@ -54,6 +55,7 @@
           </div>
           <div class="grid-item"
                v-for="(book, index) in bookList" :key="index">
+            <input type="checkbox" v-model="selectedBooks" :value="index">
             <span> {{ book.titleInfo }}</span>
             <span> {{ book.isbnCode }}</span>
             <span> {{ book.authorInfo }}</span>
@@ -61,6 +63,8 @@
           </div>
         </div>
 
+        <!-- 선택항목 삭제 -->
+        <button v-if="selectedBooks.length > 0" @click="deleteSelectedBooks">선택 항목 삭제</button>
         <!-- 저장 -->
         <button v-if="bookList.length > 0" @click="saveBooks">저장</button>
 
@@ -111,6 +115,7 @@ export default {
       bookKeyword: '',
       title: '',
       bookList: [],
+      selectedBooks: [],
       errorMessage: ''
     };
   },
@@ -265,6 +270,11 @@ export default {
             }
             console.error("Error saving books: ", error);
           })
+    },
+    deleteSelectedBooks() {
+      // 선택된 항목 삭제
+      this.bookList = this.bookList.filter((_, index) => !this.selectedBooks.includes(index));
+      this.selectedBooks = [];
     }
   }
 }
