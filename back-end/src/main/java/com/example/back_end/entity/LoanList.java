@@ -25,7 +25,7 @@ public class LoanList extends BaseTimeEntity {
     @Column(nullable = false)
     private String userName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String isbnCode;
 
     @Column
