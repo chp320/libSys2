@@ -60,7 +60,7 @@
       <div class="grid">
         <div class="grid-item">
           <label for="userName">회원 이름</label>
-          <input type="text" id="userName" v-model="userName">
+          <input type="text" id="userName" ref="userNameInput" v-model="userName">
         </div>
         <div class="grid-item">
           <label for="userBirth">회원 생년월일</label>
@@ -79,6 +79,9 @@ import {registerUser} from "@/services/registration";
 
 export default {
   name: 'JoinPage',
+  mounted() {
+    this.$refs.userNameInput.focus();
+  },
   data() {
     return {
       id: '',

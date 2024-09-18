@@ -3,6 +3,9 @@ import axios from 'axios'
 
 export default {
   name: "CheckUserPage",
+  mounted() {
+    this.$refs.inputUserID.focus();
+  },
   data() {
     return {
       userID: '',
@@ -51,6 +54,9 @@ export default {
 
 <template>
 <div class="search-user">
+  <div>
+    <h1>👻 회원증의 바코드를 읽거나, 입력해주세요~ 👻</h1>
+  </div>
   <input type="text"
          id="userID"
          v-model="userID"

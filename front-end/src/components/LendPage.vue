@@ -1,7 +1,7 @@
 <template>
-  <h2 class="boxTest">대출하기 페이지</h2>
-  <router-link to="/">메인페이지 이동</router-link>
-  <hr><br><br><br>
+<!--  <h2 class="boxTest">대출하기 페이지</h2>-->
+<!--  <router-link to="/">메인페이지 이동</router-link>-->
+<!--  <hr><br><br><br>-->
 
   <div>
 <!--    1st (no) -->
@@ -48,12 +48,14 @@
           <h3>🦄 추가된 도서 목록 🦄</h3>
           <div class="grid-header">
             <span>제목</span>
+            <span>ISBN코드</span>
             <span>저자</span>
             <span>출판사</span>
           </div>
           <div class="grid-item"
                v-for="(book, index) in bookList" :key="index">
             <span> {{ book.titleInfo }}</span>
+            <span> {{ book.isbnCode }}</span>
             <span> {{ book.authorInfo }}</span>
             <span> {{ book.pubInfo }}</span>
           </div>
@@ -87,6 +89,10 @@ import CheckUserPage from "@/components/CheckUserPage.vue";
 
 export default {
   components: {CheckUserPage},
+  // mounted() {
+  //   // automatically focus the input
+  //   this.$refs.bookKeywordInput.focus();
+  // },
   data() {
     return {
       loanData: {
@@ -244,8 +250,20 @@ export default {
             this.bookList = [];   // clear the booklist after saving
           })
           .catch((error) => {
-            console.log("Error saving books: ", error);
-            alert("저장 중 오류가 발생했습니다.");
+            // console.log("Error saving books: ", error);
+            // alert("저장 중 오류가 발생했습니다: " + (error.response ? error.response.data : error.message));
+
+            if (error.response && error.response.status === 409) {
+              // Handle duplicate record error
+              alert("이미 대출 중인 중복된 도서가 존재합니다: " + error.response.data);
+            } else if (error.response && error.response.status === 400) {
+              // Handle unique constraint violation error
+              alert("저장 중 오류가 발생했습니다: " + error.response.data);
+            } else {
+              // Handle any other errors
+              alert("저장 중 오류가 발생했습니다.");
+            }
+            console.error("Error saving books: ", error);
           })
     }
   }
