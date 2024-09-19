@@ -35,7 +35,8 @@
                  v-model="bookKeyword"
                  placeholder="바코드를 읽거나 입력해 주세요."
                  @keydown.enter="searchBook"/>
-          <button @click="searchBook">도서 검색</button>
+          <button @click="searchBook"
+                  class="btn btn-primary btn-block">도서 검색</button>
         </div>
 
         <!-- 검색 결과 없는 경우 alertMessage 출력 -->
@@ -63,10 +64,17 @@
           </div>
         </div>
 
-        <!-- 선택항목 삭제 -->
-        <button v-if="selectedBooks.length > 0" @click="deleteSelectedBooks">선택 항목 삭제</button>
-        <!-- 저장 -->
-        <button v-if="bookList.length > 0" @click="saveBooks">저장</button>
+        <div class="button-section">
+          <!-- 선택항목 삭제 -->
+          <button v-if="selectedBooks.length > 0"
+                  class="btn btn-primary btn-block"
+                  @click="deleteSelectedBooks">선택 항목 삭제</button>
+
+          <!-- 저장 -->
+          <button v-if="bookList.length > 0"
+                  class="btn btn-primary btn-block"
+                  @click="saveBooks">저장</button>
+        </div>
 
       </div>
 
@@ -315,4 +323,11 @@ export default {
   padding: 5px 0;
   border-bottom: 1px solid #eee;
 }
+
+.button-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
 </style>
