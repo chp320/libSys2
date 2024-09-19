@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,5 +50,15 @@ public class LoanService {
         }
 
         return loanLists;
+    }
+
+    // reading list (userid, loan_date, return_date)
+    public List<LoanList> getLoanList(String userID, LocalDateTime currentDate) {
+        return loanRepository.findByUserIDAndLoanDateAndReturnDate(userID, currentDate, currentDate);
+    }
+
+    public List<LoanList> getLoanLists(String userID) {
+        LocalDateTime now = LocalDateTime.now();
+        return loanRepository.findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqual(userID, now, now);
     }
 }
