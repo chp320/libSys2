@@ -33,8 +33,9 @@
           <!-- 검색창에서 입력 후 엔터키 입력하거나 '도서 검색' 버튼 클릭 시 검색 수행 -->
           <input type="text"
                  v-model="bookKeyword"
-                 placeholder="바코드를 읽거나 입력해 주세요."
-                 @keydown.enter="searchBook"/>
+                 @keydown.enter="searchBook"
+                 ref="inputBookKeyword"
+                 placeholder="바코드를 읽거나 입력해 주세요."/>
           <button @click="searchBook"
                   class="btn btn-primary btn-block">도서 검색</button>
         </div>
@@ -70,10 +71,14 @@
                   class="btn btn-primary btn-block"
                   @click="deleteSelectedBooks">선택 항목 삭제</button>
 
-          <!-- 저장 -->
+          <!-- 대출하기 -->
           <button v-if="bookList.length > 0"
                   class="btn btn-primary btn-block"
-                  @click="saveBooks">저장</button>
+                  @click="saveBooks">대출하기</button>
+        </div>
+
+        <div class="button-gohome">
+          <button class="btn btn-primary" type="button" @click="goHome">첫화면 이동</button>
         </div>
 
       </div>
@@ -103,7 +108,7 @@ export default {
   components: {CheckUserPage},
   // mounted() {
   //   // automatically focus the input
-  //   this.$refs.bookKeywordInput.focus();
+  //   this.$refs.inputBookKeyword.focus();
   // },
   data() {
     return {
@@ -122,6 +127,7 @@ export default {
       // grid 추가 위한 검색어 및 검색된 데이터
       bookKeyword: '',
       title: '',
+      bookStatus: '',
       bookList: [],
       selectedBooks: [],
       errorMessage: ''
@@ -132,6 +138,7 @@ export default {
     //   this.isUserVerified = true;
     // }
     setLoanDates() {
+      console.log("==> setLoanDates() called!!!");
       // 1st
 /*
       const currentDate = new Date();
@@ -154,20 +161,29 @@ export default {
       this.loanData.returnDate = formatDateToLocalDateTime(returnDate);
     },
     showLendPage( { userID, userName } ) {
+      console.log("==> showLendPage() called!!!");
       this.isUserVerified = true;
       this.error = '';
       this.userID = userID;
       this.userName = userName;
+
+      // ensure the input is focused after the DOM has updated.
+      this.$nextTick(() => {
+        this.$refs.inputBookKeyword.focus();
+      })
     },
     handleError(message) {
+      console.log("==> handleError() called!!!");
       this.isUserVerified = false;
       this.error = message || '사용자 없음';
     },
     isBookInList(isbnCode) {
+      console.log("==> isBookInList() called!!!");
       console.log("input: ", isbnCode);
       return this.bookList.some(book => book.isbnCode === isbnCode);
     },
     async searchBook() {
+      console.log("==> searchBook() called!!!");
       console.log('입력된 코드: ', this.bookKeyword);
       axios
           .get('https://www.nl.go.kr/NL/search/openApi/search.do', {
@@ -212,6 +228,7 @@ export default {
                   userID: this.userID,
                   userName: this.userName,
                   isbnCode: this.bookKeyword,
+                  bookStatus: 'Y',
                   titleInfo: book.titleInfo,
                   authorInfo: book.authorInfo,
                   pubInfo: book.pubInfo
@@ -228,6 +245,7 @@ export default {
           })
           .finally(() => {
             console.log("finally search");
+            this.bookKeyword = '';
           });
     },
     updateBookList() {
@@ -236,12 +254,13 @@ export default {
         userName: book.userName,
         isbnCode: book.isbnCode,
         title: book.titleInfo,
+        bookStatus: 'Y',
         loanDate: this.loanData.loanDate,
         returnDate: this.loanData.returnDate
       }));
     },
     async saveBooks() {
-      console.log("==> saveBooks()");
+      console.log("==> saveBooks() called!!!");
       this.setLoanDates();    // to set the dates
       // this.updateBookList();  // ensure bookList has proper data
 
@@ -259,7 +278,7 @@ export default {
           .post('http://localhost:8080/loan/register', updateBookList)
           .then((response) => {
             console.log("Books saved: ", response.data);
-            alert("저장되었습니다.");
+            alert("대출이 완료되었습니다.");
             this.bookList = [];   // clear the booklist after saving
           })
           .catch((error) => {
@@ -283,6 +302,9 @@ export default {
       // 선택된 항목 삭제
       this.bookList = this.bookList.filter((_, index) => !this.selectedBooks.includes(index));
       this.selectedBooks = [];
+    },
+    goHome() {
+      this.$router.push('/')
     }
   }
 }

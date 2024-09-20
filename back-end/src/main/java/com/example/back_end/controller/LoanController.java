@@ -54,8 +54,10 @@ public class LoanController {
         return loanService.getLoanList(userID, currentDateTime);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/loan/getLists")
-    public List<LoanList> getLoanLists(@RequestParam String userID) {
-        return loanService.getLoanLists(userID);
+    public ResponseEntity<?> getLoanLists(@RequestParam String userID) {
+        List<LoanList> loanLists = loanService.getLoanLists(userID);
+        return ResponseEntity.ok(loanLists);
     }
 }

@@ -31,6 +31,10 @@ public class LoanList extends BaseTimeEntity {
     @Column
     private String title;
 
+    @Column
+    /* 대출 중인 경우 Y, 반납한 경우 N */
+    private String bookStatus;
+
     @Column(nullable = false)
     private LocalDateTime loanDate;
 

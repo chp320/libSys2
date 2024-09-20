@@ -38,6 +38,7 @@ export default {
             this.$emit('error', this.error);
           })
           .finally(() => {
+            this.clearUserID();
             console.log("finally");
           });
     },
@@ -47,6 +48,9 @@ export default {
 
       // 입력창 초기화
       this.$refs.inputUserID.focus();
+    },
+    goHome() {
+      this.$router.push('/')
     }
   }
 }
@@ -65,8 +69,14 @@ export default {
          placeholder="바코드를 읽거나 고객번호를 입력해주세요">
   <button @click="clearUserID">다시 입력하기</button>
 </div>
+<div class="button-gohome">
+  <button class="btn btn-primary" type="button" @click="goHome">확인</button>
+</div>
 </template>
 
 <style scoped>
 
+.button-gohome {
+  float: right;
+}
 </style>
