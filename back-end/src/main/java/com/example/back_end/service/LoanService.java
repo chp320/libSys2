@@ -57,8 +57,8 @@ public class LoanService {
         return loanRepository.findByUserIDAndLoanDateAndReturnDate(userID, currentDate, currentDate);
     }
 
-    public List<LoanList> getLoanLists(String userID) {
+    public List<LoanList> getLoanLists(String userID, String bookStatus) {
         LocalDateTime now = LocalDateTime.now();
-        return loanRepository.findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqual(userID, now, now);
+        return loanRepository.findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqualAndBookStatusEquals(userID, now, now, bookStatus);
     }
 }

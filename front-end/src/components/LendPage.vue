@@ -77,6 +77,22 @@
                   @click="saveBooks">대출하기</button>
         </div>
 
+        <div v-if="loanList.length > 0">
+          <h3>대출 내역</h3>
+          <div class="grid-header">
+            <span>제목</span>
+            <span>대출일</span>
+            <span>반납일</span>
+          </div>
+          <div class="grid-item" v-for="(loan, index) in loanList" :key="index">
+            <span>{{ loan.title }}</span>
+<!--            <span>{{ loan.loanDate }}</span>-->
+            <span>{{ formatDateToYYYYMMD(loan.loanDate) }}</span>
+<!--            <span>{{ loan.returnDate }}</span>-->
+            <span>{{ formatDateToYYYYMMD(loan.returnDate) }}</span>
+          </div>
+        </div>
+
         <div class="button-gohome">
           <button class="btn btn-primary" type="button" @click="goHome">첫화면 이동</button>
         </div>
@@ -130,6 +146,7 @@ export default {
       bookStatus: '',
       bookList: [],
       selectedBooks: [],
+      loanList: [],
       errorMessage: ''
     };
   },
@@ -156,9 +173,17 @@ export default {
       };
 
       this.loanData.loanDate = formatDateToLocalDateTime(new Date());
+
+      // set return date to 14 days from now
       const returnDate = new Date();
       returnDate.setDate(new Date().getDate()+14);
+
+      // set return time
+      returnDate.setHours(23, 59, 59);
       this.loanData.returnDate = formatDateToLocalDateTime(returnDate);
+
+      console.log("loanDate: ", this.loanData.loanDate);
+      console.log("returnDate: ", this.loanData.returnDate);
     },
     showLendPage( { userID, userName } ) {
       console.log("==> showLendPage() called!!!");
@@ -279,6 +304,10 @@ export default {
           .then((response) => {
             console.log("Books saved: ", response.data);
             alert("대출이 완료되었습니다.");
+
+            // after successfully saving, fetch the list for the user
+            this.getLists();
+
             this.bookList = [];   // clear the booklist after saving
           })
           .catch((error) => {
@@ -305,6 +334,32 @@ export default {
     },
     goHome() {
       this.$router.push('/')
+    },
+    async getLists() {
+      console.log("==> getLists() called!!!");
+
+      await axios.get('http://localhost:8080/loan/getLists', {
+        params: { userID: this.userID, bookStatus: 'Y' }
+      })
+          .then((response) => {
+            console.log("all lists: ", response.data);
+            this.loanList = response.data;
+          })
+          .catch((error) => {
+            console.error("Error fetching loan list: ", error);
+            alert("대출 목록 조회 중 오류가 발생했습니다.");
+          })
+    },
+    formatDateToYYYYMMD(date) {
+      // if date is null or undefined, return an empty string
+      if(!date) return '';
+
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
     }
   }
 }

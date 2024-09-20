@@ -17,9 +17,10 @@ public interface LoanRepository extends JpaRepository<LoanList, Long> {
     );
 
     // get the data between from-date and to-date.
-    List<LoanList> findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqual(
+    List<LoanList> findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqualAndBookStatusEquals(
             String userID,
             LocalDateTime now1,
-            LocalDateTime now2
+            LocalDateTime now2,
+            String bookStatus
     );
 }
