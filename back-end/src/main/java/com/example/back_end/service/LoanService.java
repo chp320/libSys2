@@ -36,7 +36,8 @@ public class LoanService {
 
 //        insert 수행 전, 이미 존재하는지 확인
         for (LoanList loanList : loanLists) {
-            Optional<LoanList> existingLoan = loanRepository.findByIsbnCode(loanList.getIsbnCode());
+//            Optional<LoanList> existingLoan = loanRepository.findByIsbnCode(loanList.getIsbnCode());
+            Optional<LoanList> existingLoan = loanRepository.findByIsbnCodeAndUserID(loanList.getIsbnCode(), loanList.getUserID());
 
             if(existingLoan.isPresent()){
                 throw new DuplicateRecordException("ISBN Code " + loanList.getIsbnCode() + " already exists.");

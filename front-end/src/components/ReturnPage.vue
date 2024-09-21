@@ -44,6 +44,7 @@
   <input type="text"
          id="isbnCode"
          @keydown.enter="doReturnBook"
+         ref="inputIsbnCode"
          placeholder="바코드를 읽거나 ISBN 코드를 입력해주세요."/>
 </div>
   <div class="button-gohome">
@@ -57,6 +58,9 @@ import axios from "axios";
 
 export default {
   // components: {CheckUserPage},
+  mounted() {
+    this.$refs.inputIsbnCode.focus();
+  },
   data() {
     return {
       returnDate: '',
@@ -84,13 +88,30 @@ export default {
             if(response.status === 200) {
               alert("성공적으로 반납되었습니다.");
               document.getElementById('isbnCode').value = '';   // isbn 입력창 초기화
+
+              // ensure the input is focused after the DOM has updated.
+              this.$nextTick(() => {
+                this.$refs.inputIsbnCode.focus();
+              })
             } else {
               alert("반납 중 오류가 발생했습니다. 다시 시도해 주세요");
+              document.getElementById('isbnCode').value = '';   // isbn 입력창 초기화
+
+              // ensure the input is focused after the DOM has updated.
+              this.$nextTick(() => {
+                this.$refs.inputIsbnCode.focus();
+              })
             }
           })
           .catch((error) => {
             console.error("Error returning book: ", error);
             alert("반납 중 오류가 발생했습니다.");
+            document.getElementById('isbnCode').value = '';   // isbn 입력창 초기화
+
+            // ensure the input is focused after the DOM has updated.
+            this.$nextTick(() => {
+              this.$refs.inputIsbnCode.focus();
+            })
           })
     },
     setReturnDate() {

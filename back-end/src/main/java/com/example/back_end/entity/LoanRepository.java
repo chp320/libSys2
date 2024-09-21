@@ -1,6 +1,7 @@
 package com.example.back_end.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.expression.spel.ast.OpPlus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 
 public interface LoanRepository extends JpaRepository<LoanList, Long> {
     Optional<LoanList> findByIsbnCode(String isbnCode);
+    Optional<LoanList> findByIsbnCodeAndUserID(String isbnCode, String userID);
 
     // userid 와 sysdate between loan_date and return_date 에 부합하는 목록 조회
     List<LoanList> findByUserIDAndLoanDateAndReturnDate(
