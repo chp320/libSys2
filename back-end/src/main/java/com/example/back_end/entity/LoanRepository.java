@@ -23,4 +23,16 @@ public interface LoanRepository extends JpaRepository<LoanList, Long> {
             LocalDateTime now2,
             String bookStatus
     );
+
+//    // update bookStatus, returnDate via isbnCode
+//    List<LoanList> findByIsbnCodeAndBookStatusAndReturnDate(
+//            String isbnCode,
+//            String bookStatus,
+//            LocalDateTime currentDate
+//    );
+
+    Optional<LoanList> findByIsbnCodeAndBookStatus(
+            String isbnCode,
+            String bookStatus
+    );
 }

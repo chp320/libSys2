@@ -61,4 +61,29 @@ public class LoanService {
         LocalDateTime now = LocalDateTime.now();
         return loanRepository.findByUserIDAndLoanDateLessThanEqualAndReturnDateGreaterThanEqualAndBookStatusEquals(userID, now, now, bookStatus);
     }
+
+//    public List<LoanList> setReturnBook(String isbnCode, String bookStatus, LocalDateTime returnDate) {
+//        return loanRepository.findByIsbnCodeAndBookStatusAndReturnDate(isbnCode, bookStatus, returnDate);
+//    }
+
+//    public LoanList returnBook(String isbnCode, String bookStatus, LocalDateTime returnDate) {
+//        // find the loan record by ISBN code and ensure it's currently borrowed
+//        Optional<LoanList> optionalLoanList = loanRepository.findByIsbnCodeAndBookStatusAndReturnDate(isbnCode, bookStatus, returnDate);
+//    }
+
+    public boolean updateBookStatusAndReturnDate(String isbnCode,
+                                                 String bookStatus) {
+        Optional<LoanList> loanOptional = loanRepository.findByIsbnCodeAndBookStatus(isbnCode, bookStatus);
+
+        // 데이터 존재하는 경우 업데이트 처리!
+        if(loanOptional.isPresent()){
+            LoanList loanList = loanOptional.get();
+            loanList.setBookStatus("N");
+            loanList.setReturnDate(LocalDateTime.now());
+//            loanList.setReturnDate(currentDate);
+            loanRepository.save(loanList);
+            return true;
+        }
+        return false;
+    }
 }

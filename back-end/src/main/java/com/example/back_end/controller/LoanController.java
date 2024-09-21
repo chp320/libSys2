@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class LoanController {
@@ -61,5 +64,25 @@ public class LoanController {
 
         List<LoanList> loanLists = loanService.getLoanLists(userID, bookStatus);
         return ResponseEntity.ok(loanLists);
+    }
+
+    @PostMapping("/loan/doReturn")
+    public ResponseEntity<?> doReturnBook(@RequestBody Map<String, String> request) {
+        String isbnCode = request.get("isbnCode");
+        String bookStatus = request.get("bookStatus");
+//        String returnDate = request.get("returnDate");
+//        // String -> LocalDateTime 변경
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime date = LocalDateTime.parse(returnDate, formatter);
+
+        System.out.println("(doReturnBook) isbnCode: " + isbnCode + ", bookStatus: " + bookStatus);
+
+        boolean updated = loanService.updateBookStatusAndReturnDate(isbnCode, bookStatus);
+        if (updated) {
+            return ResponseEntity.ok("Book returned successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found or already returned");
+        }
+
     }
 }
