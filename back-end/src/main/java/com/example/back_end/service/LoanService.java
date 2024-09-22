@@ -36,6 +36,8 @@ public class LoanService {
 
 //        insert 수행 전, 이미 존재하는지 확인
         for (LoanList loanList : loanLists) {
+            loanList.getLoanDate().plusHours(9L);
+            loanList.getReturnDate().plusHours(9L);
 //            Optional<LoanList> existingLoan = loanRepository.findByIsbnCode(loanList.getIsbnCode());
             Optional<LoanList> existingLoan = loanRepository.findByIsbnCodeAndUserID(loanList.getIsbnCode(), loanList.getUserID());
 
@@ -80,7 +82,7 @@ public class LoanService {
         if(loanOptional.isPresent()){
             LoanList loanList = loanOptional.get();
             loanList.setBookStatus("N");
-            loanList.setReturnDate(LocalDateTime.now());
+            loanList.setReturnDate(LocalDateTime.now().plusHours(9L));
 //            loanList.setReturnDate(currentDate);
             loanRepository.save(loanList);
             return true;
