@@ -1,7 +1,7 @@
 <template>
-  <h2 class="boxTest">반납하기 페이지</h2>
-  <router-link to="/">메인페이지 이동</router-link>
-  <hr><br><br><br>
+<!--  <h2 class="boxTest">반납하기 페이지</h2>-->
+<!--  <router-link to="/">메인페이지 이동</router-link>-->
+<!--  <hr><br><br><br>-->
 
   <!-- 2024.09.21 화면 접근 프로세스 변경 -->
 <!--  <div>-->
@@ -36,20 +36,45 @@
 <!--    <p v-if="error">{{ error }}</p>-->
 <!--  </div>-->
 
-<div class="return-container">
+<!-- 2024.09.26 화면 새로 구성 -->
+<!--<div class="return-container">-->
+<!--  <div>-->
+<!--    <h1> 🎃 반납할 도서의 바코드를 읽거나<br>-->
+<!--      ISBN 코드를 입력해주세요~~ 🎃 </h1>-->
+<!--  </div>-->
+<!--  <input type="text"-->
+<!--         id="isbnCode"-->
+<!--         @keydown.enter="doReturnBook"-->
+<!--         ref="inputIsbnCode"-->
+<!--         placeholder="바코드를 읽거나 ISBN 코드를 입력해주세요."/>-->
+<!--</div>-->
+<!--  <div class="button-gohome">-->
+<!--    <button class="btn btn-primary" type="button" @click="goHome">첫화면 이동</button>-->
+<!--  </div>-->
+
+<div class="container">
   <div>
     <h1> 🎃 반납할 도서의 바코드를 읽거나<br>
       ISBN 코드를 입력해주세요~~ 🎃 </h1>
   </div>
-  <input type="text"
-         id="isbnCode"
-         @keydown.enter="doReturnBook"
-         ref="inputIsbnCode"
-         placeholder="바코드를 읽거나 ISBN 코드를 입력해주세요."/>
-</div>
-  <div class="button-gohome">
-    <button class="btn btn-primary" type="button" @click="goHome">첫화면 이동</button>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">ISBN 코드</span>
+    </div>
+    <input type="text"
+           id="isbnCode"
+           @keydown.enter="doReturnBook"
+           ref="inputIsbnCode"
+           placeholder="바코드를 읽거나 ISBN 코드를 입력해주세요."
+           class="form-control"/>
   </div>
+  <div class="bottom-0">
+    <div class="btn-outline-primary">
+      <button class="btn btn-primary" type="button" @click="goHome">첫 화면으로 이동</button>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <script>
@@ -130,7 +155,34 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  //max-width: 100%;
+  //margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  min-width: 50vh;
+  text-align: center;
+}
+
+.input-group {
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-outline-primary {
+  gap: 10px;
+  align-items: center;
+}
+
 .boxTest {
   width: 200px;
   height: 50px;
