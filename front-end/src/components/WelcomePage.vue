@@ -42,13 +42,16 @@ export default {
 <style scoped>
 .container {
   max-width: 900px;
+  //max-height: 500px;
   position: relative;
   top: 150px;
   left: 3%;
 }
 .container::before {
-  width: 100%;
-  height: 100%;
+  //width: 100%;
+  //height: 100%;
+  width: 900px;
+  height: 350px;
   position: absolute;
   content: "";
   background-image: url("../assets/image1.jpeg");
